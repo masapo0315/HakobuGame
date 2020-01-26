@@ -13,24 +13,28 @@ public class Title : MonoBehaviour
 
     //マネージャー
 
-    [SerializeField] SceneLoadManager _sceneLoadManager;    //SceneLoadManager
     [SerializeField] TouchManager _touchManager;            //TouchManager
+    [SerializeField] SceneLoadManager _sceneLoadManager;    //SceneLoadManager
 
     // Update is called once per frame
     void Update()
     {
         text.color = GetAlphaColor(text.color);
 
+        //タッチ状態更新
+        _touchManager.Update();
+
         //タッチ取得
         TouchManager touchState = _touchManager.getTouch();
 
-        //タッチされたらステージセレクトへ
+        //タッチされていなければこれより先の処理を行わない。
         if (!touchState.touchFlag) return;
+
         if (touchState.touchPhase == TouchPhase.Began)
         {
+            //タッチしたらステージセレクト
             _sceneLoadManager.LoadScene("StageSelect");
         }
-
     }
 
     /// <summary>
