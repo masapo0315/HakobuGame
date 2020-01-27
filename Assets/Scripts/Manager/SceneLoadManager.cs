@@ -52,6 +52,11 @@ public class SceneLoadManager : MonoBehaviour
         StartCoroutine(LoadNextScene(_sceneName));
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="_sceneName"></param>
+    /// <returns></returns>
     private IEnumerator LoadNextScene(string _sceneName)
     {
         AsyncOperation async = SceneManager.LoadSceneAsync(_sceneName);

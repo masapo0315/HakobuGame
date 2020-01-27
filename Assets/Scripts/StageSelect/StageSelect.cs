@@ -7,11 +7,6 @@ public class StageSelect : MonoBehaviour
 {
     //private
 
-    //マネージャー
-    [SerializeField] TouchManager _touchManager;            //TouchManager
-    [SerializeField] SceneLoadManager _sceneLoadManager;    //SceneLoadManager
-
-    //ボタンのタイプ
     private enum ButtonType
     {
         StageOne,       //ステージ１へ
@@ -28,7 +23,14 @@ public class StageSelect : MonoBehaviour
     {
         this.gameObject.GetComponent<GameObject>();
 
-        if (this.gameObject.tag == "StageOne") { }
+        #region タグによるボタンタイプの識別
+
+        if (this.gameObject.tag == "StageOne") { thisButtonType = ButtonType.StageOne; }
+        else if(this.gameObject.tag == "StageTwo") { thisButtonType = ButtonType.StageTwo; }
+        else if (this.gameObject.tag == "StageThree") { thisButtonType = ButtonType.StageThree; }
+        else if (this.gameObject.tag == "StageFour") { thisButtonType = ButtonType.StageFour; }
+        else if (this.gameObject.tag == "BackTitle") { thisButtonType = ButtonType.BackTitle; }
+        #endregion
     }
 
     // Update is called once per frame
@@ -43,10 +45,10 @@ public class StageSelect : MonoBehaviour
     private void StageDecision()
     {
         //タッチ状態更新
-        _touchManager.Update();
+        TouchManager.Instnce.Update();
 
         //タッチ取得
-        TouchManager touchState = _touchManager.getTouch();
+        TouchManager touchState = TouchManager.Instnce.getTouch();
 
         //タッチされていなければこれより先の処理を行わない。
         if (!touchState.touchFlag) return;
@@ -63,6 +65,13 @@ public class StageSelect : MonoBehaviour
 
             //タッチした場所にオブジェクトがなければこの先の処理を行わない
             if (!hit.collider.gameObject) return;
+
+            //タッチしたボタンの種類で行き先を変える
+            if (thisButtonType == ButtonType.StageOne) { SceneLoadManager.Instnce.LoadScene("Stage1"); }
+            else if (thisButtonType == ButtonType.StageTwo) { SceneLoadManager.Instnce.LoadScene("Stage2"); }
+            else if (thisButtonType == ButtonType.StageThree) { SceneLoadManager.Instnce.LoadScene("Stage3"); }
+            else if (thisButtonType == ButtonType.StageFour) { SceneLoadManager.Instnce.LoadScene("Stage4"); }
+            else if (thisButtonType == ButtonType.BackTitle) { SceneLoadManager.Instnce.LoadScene("Title"); }
 
 
         }

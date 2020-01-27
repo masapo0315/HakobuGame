@@ -14,7 +14,6 @@ public class Title : MonoBehaviour
     //マネージャー
 
     [SerializeField] TouchManager _touchManager;            //TouchManager
-    [SerializeField] SceneLoadManager _sceneLoadManager;    //SceneLoadManager
 
     // Update is called once per frame
     void Update()
@@ -33,7 +32,7 @@ public class Title : MonoBehaviour
         if (touchState.touchPhase == TouchPhase.Began)
         {
             //タッチしたらステージセレクト
-            _sceneLoadManager.LoadScene("StageSelect");
+            SceneLoadManager.Instnce.LoadScene("StageSelect");
         }
     }
 
