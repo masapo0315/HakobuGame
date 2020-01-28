@@ -19,7 +19,8 @@ public class BoxControler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        BoxMove();
+        GetGyro();
     }
 
     /// <summary>
@@ -52,6 +53,6 @@ public class BoxControler : MonoBehaviour
     /// </summary>
     private void GetGyro()
     {
-        this.transform.localPosition = Quaternion.Euler(90, 0, 0) * (new Quaternion(-gyro.x, -gyro.y, -gyro.z, -gyro.w));
+        this.transform.localRotation = Quaternion.Euler(90, 0, 0) * (new Quaternion(-gyro.x, -gyro.y, -gyro.z, -gyro.w));
     }
 }

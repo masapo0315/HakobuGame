@@ -66,7 +66,6 @@ public class PlayerControler : MonoBehaviour
 
         PlayerMove();
         PlayerJump();
-
     }
 
     #region プレイヤー操作や死亡状態確認など
@@ -76,10 +75,16 @@ public class PlayerControler : MonoBehaviour
     /// </summary>
     private void PlayerMove()
     {
-        if (touchState.touchPhase == TouchPhase.Began)
+        if (touchState.touchPhase == TouchPhase.Moved)
         {
-            //タッチした場所にオブジェクトがなければこの先の処理を行わない
-            if (!hit.collider.gameObject) return;
+            if (hit.collider.gameObject == rightButton)
+            {
+                //右に移動
+            }
+            else if (hit.collider.gameObject == leftButton)
+            {
+                //左に移動
+            }
         }
     }
 
@@ -90,9 +95,10 @@ public class PlayerControler : MonoBehaviour
     {
         if (touchState.touchPhase == TouchPhase.Began)
         {
-            //タッチした場所にオブジェクトがなければこの先の処理を行わない
-            if (!hit.collider.gameObject) return;
-
+            if (hit.collider.gameObject  == jumpButton)
+            {
+                //ジャンプ
+            }
         }
     }
 
@@ -101,10 +107,14 @@ public class PlayerControler : MonoBehaviour
     /// </summary>
     private void BoxCatch()
     {
-        
-
-        BoxCatchButton.SetActive(false);
-        BoxLeaveButton.SetActive(true);
+        if (touchState.touchPhase == TouchPhase.Began)
+        {
+            if (hit.collider.gameObject == BoxCatchButton)
+            {
+                BoxCatchButton.SetActive(false);
+                BoxLeaveButton.SetActive(true);
+            }
+        }
     }
 
     /// <summary>
@@ -112,8 +122,14 @@ public class PlayerControler : MonoBehaviour
     /// </summary>
     private void BoxLeave()
     {
-        BoxLeaveButton.SetActive(true);
-        BoxCatchButton.SetActive(true);
+        if(touchState.touchPhase == TouchPhase.Began)
+        {
+            if(hit.collider.gameObject == BoxLeaveButton)
+            {
+                BoxLeaveButton.SetActive(false);
+                BoxCatchButton.SetActive(true);
+            }
+        }
     }
 
     /// <summary>
