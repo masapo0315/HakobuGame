@@ -15,10 +15,14 @@ public class PlayerControler : MonoBehaviour
     //操作に必要なボタン
     [SerializeField] private GameObject rightButton;    //右矢印ボタン
     [SerializeField] private GameObject leftButton;     //左矢印ボタン
+    [SerializeField] private GameObject BoxCatchButton; //箱を掴むボタン
+    [SerializeField] private GameObject BoxLeaveButton; //箱を離すボタン
     [SerializeField] private GameObject jumpButton;     //ジャンプボタン
 
-    //タッチ状態
-    TouchManager touchState;
+    
+    private TouchManager touchState;    //タッチ状態   
+    private Vector2 worldPoint;         //座標系変換
+    private RaycastHit2D hit;
 
     //プレイヤーの状態
     [HideInInspector] public enum PlayerState
@@ -48,11 +52,17 @@ public class PlayerControler : MonoBehaviour
         //タッチ取得
         touchState = TouchManager.Instnce.getTouch();
 
+        //座標系変換
+        worldPoint = Camera.main.ScreenToWorldPoint(touchState.touchPosition);
+
         //死亡状態なら操作不能にする
         if (playerState == PlayerState.dead) return;
 
         //タッチされていなければこれより先の処理を行わない。
         if (!touchState.touchFlag) return;
+
+        //タッチした瞬間の処理
+        hit = Physics2D.Raycast(worldPoint, Vector2.zero);
 
         PlayerMove();
         PlayerJump();
@@ -66,17 +76,10 @@ public class PlayerControler : MonoBehaviour
     /// </summary>
     private void PlayerMove()
     {
-        //座標系変換
-        Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touchState.touchPosition);
-
         if (touchState.touchPhase == TouchPhase.Began)
         {
-            //タッチした瞬間の処理
-            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-
             //タッチした場所にオブジェクトがなければこの先の処理を行わない
             if (!hit.collider.gameObject) return;
-
         }
     }
 
@@ -85,18 +88,32 @@ public class PlayerControler : MonoBehaviour
     /// </summary>
     private void PlayerJump()
     {
-        //座標系変換
-        Vector2 worldPoint = Camera.main.ScreenToWorldPoint(touchState.touchPosition);
-
         if (touchState.touchPhase == TouchPhase.Began)
         {
-            //タッチした瞬間の処理
-            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-
             //タッチした場所にオブジェクトがなければこの先の処理を行わない
             if (!hit.collider.gameObject) return;
 
         }
+    }
+
+    /// <summary>
+    /// 箱をつかむ
+    /// </summary>
+    private void BoxCatch()
+    {
+        
+
+        BoxCatchButton.SetActive(false);
+        BoxLeaveButton.SetActive(true);
+    }
+
+    /// <summary>
+    /// 箱を離す
+    /// </summary>
+    private void BoxLeave()
+    {
+        BoxLeaveButton.SetActive(true);
+        BoxCatchButton.SetActive(true);
     }
 
     /// <summary>
@@ -116,8 +133,6 @@ public class PlayerControler : MonoBehaviour
     /// </summary>
     private IEnumerator DeadCancel()
     {
-
-
         yield return new WaitForSeconds(deadCancelTime);
 
         playerState = PlayerState.nomal;
