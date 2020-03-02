@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class StageSelect : MonoBehaviour
 {
     //private
+    [SerializeField] private FadeControler _fadeControler;
+    private float waitTime;
 
     private enum ButtonType
     {
@@ -72,7 +74,6 @@ public class StageSelect : MonoBehaviour
             else if (thisButtonType == ButtonType.StageThree) { SceneLoadManager.Instnce.LoadScene("Stage3"); }
             else if (thisButtonType == ButtonType.StageFour) { SceneLoadManager.Instnce.LoadScene("Stage4"); }
             else if (thisButtonType == ButtonType.BackTitle) { SceneLoadManager.Instnce.LoadScene("Title"); }
-
 
         }
 
